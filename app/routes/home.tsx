@@ -11,10 +11,8 @@ import { LandingHeader } from "~/components/landing/landing-header";
 import { LandingHero } from "~/components/landing/landing-hero";
 import { LandingBenefits } from "~/components/landing/landing-benefits";
 import { FeaturedCourses } from "~/components/landing/featured-courses";
-import {
-  LandingClosing,
-  LandingFooter,
-} from "~/components/landing/landing-closing";
+import { LandingClosing } from "~/components/landing/landing-closing";
+import { LandingFooter } from "~/components/landing/landing-footer";
 
 function getAllUsers() {
   return db.select().from(users).all();
