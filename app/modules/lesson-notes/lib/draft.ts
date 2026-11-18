@@ -1,8 +1,6 @@
 import { MAX_NOTE_LENGTH } from "~/lib/notes";
 
 export type NoteDraft = {
-  length: number;
-  limit: number;
   tooLong: boolean;
   /** The draft differs from what is saved, ignoring surrounding whitespace. */
   dirty: boolean;
@@ -11,17 +9,16 @@ export type NoteDraft = {
 };
 
 export function describeDraft(draft: string, savedBody: string): NoteDraft {
-  const length = draft.length;
+  // The server trims before it checks the limit, so the counter does too.
+  const trimmed = draft.trim();
+  const length = trimmed.length;
   const tooLong = length > MAX_NOTE_LENGTH;
-  const dirty = draft.trim() !== savedBody.trim();
-  const empty = draft.trim().length === 0;
+  const dirty = trimmed !== savedBody.trim();
 
   return {
-    length,
-    limit: MAX_NOTE_LENGTH,
     tooLong,
     dirty,
-    canSave: dirty && !tooLong && !empty,
+    canSave: dirty && !tooLong && length > 0,
     counterLabel: `${length.toLocaleString("en")} / ${MAX_NOTE_LENGTH.toLocaleString("en")}`,
   };
 }

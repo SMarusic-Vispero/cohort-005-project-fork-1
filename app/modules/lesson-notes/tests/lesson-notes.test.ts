@@ -4,10 +4,7 @@ import { MAX_NOTE_LENGTH } from "~/lib/notes";
 
 describe("describeNoteDraft", () => {
   it("counts characters against the note limit", () => {
-    const draft = describeNoteDraft("hello", "");
-    expect(draft.length).toBe(5);
-    expect(draft.limit).toBe(MAX_NOTE_LENGTH);
-    expect(draft.counterLabel).toBe("5 / 2,000");
+    expect(describeNoteDraft("hello", "").counterLabel).toBe("5 / 2,000");
   });
 
   it("formats large counts with a thousands separator", () => {
@@ -46,6 +43,13 @@ describe("describeNoteDraft", () => {
     const draft = describeNoteDraft("a".repeat(MAX_NOTE_LENGTH), "");
     expect(draft.tooLong).toBe(false);
     expect(draft.canSave).toBe(true);
+  });
+
+  it("does not count surrounding whitespace against the limit", () => {
+    const draft = describeNoteDraft(`${"a".repeat(MAX_NOTE_LENGTH)}\n`, "");
+    expect(draft.tooLong).toBe(false);
+    expect(draft.canSave).toBe(true);
+    expect(draft.counterLabel).toBe("2,000 / 2,000");
   });
 
   it("blocks a note one character over the limit", () => {
