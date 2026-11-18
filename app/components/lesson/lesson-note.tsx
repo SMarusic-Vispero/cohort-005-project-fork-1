@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFetcher } from "react-router";
-import { describeNoteDraft } from "~/modules/lesson-notes";
+import { describeNoteDraft, type NoteDraft } from "~/modules/lesson-notes";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent } from "~/components/ui/card";
 import { Textarea } from "~/components/ui/textarea";
@@ -12,8 +12,11 @@ type SavedNote = { body: string; updatedAt: string } | null;
 export function LessonNote({ note }: { note: SavedNote }) {
   const fetcher = useFetcher<{ ok: boolean; error?: string }>();
   const [body, setBody] = useState(note?.body ?? "");
+  const [submittedBody, setSubmittedBody] = useState<string | null>(null);
   const isSaving = fetcher.state !== "idle";
-  const error = fetcher.data?.error;
+  // A save error describes the text that was sent; once it is edited the
+  // error no longer applies.
+  const error = body === submittedBody ? fetcher.data?.error : undefined;
   const draft = describeNoteDraft(body, note?.body ?? "");
 
   return (
@@ -21,7 +24,11 @@ export function LessonNote({ note }: { note: SavedNote }) {
       <CardContent className="p-6">
         <NoteHeader />
 
-        <fetcher.Form method="post" className="space-y-2">
+        <fetcher.Form
+          method="post"
+          className="space-y-2"
+          onSubmit={() => setSubmittedBody(body)}
+        >
           <input type="hidden" name="intent" value="save-note" />
           <Textarea
             name="body"
@@ -47,18 +54,24 @@ export function LessonNote({ note }: { note: SavedNote }) {
                 updatedAt={note?.updatedAt}
               />
             </div>
-            <span
-              className={cn(
-                "shrink-0 text-xs tabular-nums",
-                draft.tooLong ? "text-red-600" : "text-muted-foreground"
-              )}
-            >
-              {draft.counterLabel}
-            </span>
+            <NoteCounter draft={draft} />
           </div>
         </fetcher.Form>
       </CardContent>
     </Card>
+  );
+}
+
+function NoteCounter({ draft }: { draft: NoteDraft }) {
+  return (
+    <span
+      className={cn(
+        "shrink-0 text-xs tabular-nums",
+        draft.tooLong ? "text-red-600" : "text-muted-foreground"
+      )}
+    >
+      {draft.counterLabel}
+    </span>
   );
 }
 
@@ -87,7 +100,7 @@ function NoteStatus({
   updatedAt: string | undefined;
 }) {
   if (error) return <span className="text-sm text-red-600">{error}</span>;
-  if (dirty && updatedAt) {
+  if (dirty) {
     return (
       <span className="text-xs text-muted-foreground">Unsaved changes</span>
     );
