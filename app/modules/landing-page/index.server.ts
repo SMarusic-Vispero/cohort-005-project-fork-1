@@ -5,7 +5,7 @@ export type { FeaturedCourse, Showcase } from "./lib/showcase";
 export { FEATURED_COURSE_LIMIT } from "./lib/showcase";
 
 /**
- * The landing page's view of the catalogue, bound to a database. The app uses
+ * The landing page's view of the catalog, bound to a database. The app uses
  * `landingPage`; tests build their own against a test database.
  */
 export function createLandingPage(database: Db) {
