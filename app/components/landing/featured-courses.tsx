@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ArrowRight, BookOpen, User } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Card,
@@ -8,6 +8,7 @@ import {
   CardHeader,
 } from "~/components/ui/card";
 import { CourseImage } from "~/components/course-image";
+import { CourseByline } from "./course-byline";
 import type { FeaturedCourse } from "~/modules/landing-page/index.server";
 
 export function FeaturedCourses({ courses }: { courses: FeaturedCourse[] }) {
@@ -59,15 +60,8 @@ function CourseCard({ course }: { course: FeaturedCourse }) {
             {course.description}
           </p>
         </CardContent>
-        <CardFooter className="flex items-center justify-between text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <User className="size-3" />
-            {course.instructorName}
-          </span>
-          <span className="flex items-center gap-1">
-            <BookOpen className="size-3" />
-            {course.lessonCount} lessons
-          </span>
+        <CardFooter>
+          <CourseByline course={course} className="w-full justify-between" />
         </CardFooter>
       </Card>
     </Link>

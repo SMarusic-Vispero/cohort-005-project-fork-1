@@ -1,7 +1,7 @@
 import { Link } from "react-router";
-import { BookOpen, User } from "lucide-react";
 import { CourseImage } from "~/components/course-image";
 import { LandingActions } from "./landing-actions";
+import { CourseByline } from "./course-byline";
 import type { FeaturedCourse } from "~/modules/landing-page/index.server";
 
 export function LandingHero({
@@ -63,16 +63,7 @@ function Spotlight({ course }: { course: FeaturedCourse }) {
           <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
             {course.description}
           </p>
-          <div className="mt-4 flex items-center gap-4 text-xs text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <User className="size-3" />
-              {course.instructorName}
-            </span>
-            <span className="flex items-center gap-1">
-              <BookOpen className="size-3" />
-              {course.lessonCount} lessons
-            </span>
-          </div>
+          <CourseByline course={course} className="mt-4 gap-4" />
         </div>
       </div>
     </Link>
