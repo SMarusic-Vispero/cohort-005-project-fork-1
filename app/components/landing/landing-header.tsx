@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
+const navLinkClass =
+  "text-sm font-medium text-muted-foreground transition-colors hover:text-foreground";
+
 export function LandingHeader({ signedIn }: { signedIn: boolean }) {
   return (
     <header className="border-b border-border">
@@ -11,10 +14,7 @@ export function LandingHeader({ signedIn }: { signedIn: boolean }) {
           Cadence
         </Link>
         <nav className="flex items-center gap-6">
-          <Link
-            to="/courses"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
+          <Link to="/courses" className={navLinkClass}>
             Courses
           </Link>
           <ThemeToggle />
@@ -24,10 +24,7 @@ export function LandingHeader({ signedIn }: { signedIn: boolean }) {
             </Button>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
+              <Link to="/login" className={navLinkClass}>
                 Log In
               </Link>
               <Button asChild size="sm">
