@@ -10,9 +10,7 @@ import {
 import { CourseImage } from "~/components/course-image";
 import type { FeaturedCourse } from "~/modules/landing-page/index.server";
 
-export type LandingCourse = FeaturedCourse;
-
-export function FeaturedCourses({ courses }: { courses: LandingCourse[] }) {
+export function FeaturedCourses({ courses }: { courses: FeaturedCourse[] }) {
   if (courses.length === 0) return null;
 
   return (
@@ -42,7 +40,7 @@ export function FeaturedCourses({ courses }: { courses: LandingCourse[] }) {
   );
 }
 
-function CourseCard({ course }: { course: LandingCourse }) {
+function CourseCard({ course }: { course: FeaturedCourse }) {
   return (
     <Link to={`/courses/${course.slug}`} className="group">
       <Card className="h-full overflow-hidden pt-0 transition-shadow group-hover:shadow-md">

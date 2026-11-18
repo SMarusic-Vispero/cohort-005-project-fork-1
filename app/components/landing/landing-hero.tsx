@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { BookOpen, User } from "lucide-react";
 import { CourseImage } from "~/components/course-image";
 import { LandingActions } from "./landing-actions";
-import type { LandingCourse } from "./featured-courses";
+import type { FeaturedCourse } from "~/modules/landing-page/index.server";
 
 export function LandingHero({
   signedIn,
@@ -11,7 +11,7 @@ export function LandingHero({
 }: {
   signedIn: boolean;
   catalogSummary: string | null;
-  spotlight: LandingCourse | undefined;
+  spotlight: FeaturedCourse | undefined;
 }) {
   return (
     <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-[1.15fr_0.85fr] lg:py-28">
@@ -40,7 +40,7 @@ export function LandingHero({
   );
 }
 
-function Spotlight({ course }: { course: LandingCourse }) {
+function Spotlight({ course }: { course: FeaturedCourse }) {
   return (
     <Link
       to={`/courses/${course.slug}`}
