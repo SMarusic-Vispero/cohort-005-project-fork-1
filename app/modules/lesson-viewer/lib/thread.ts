@@ -1,10 +1,29 @@
 import { getCourseForLesson } from "./course";
 import { renderComment } from "~/lib/comment-markdown.server";
 import { markdown, type Markdown } from "~/lib/text";
-import type { RenderedComment } from "~/components/comment-thread";
 import { db } from "~/db";
 import { comments, users, UserRole } from "~/db/schema";
 import { asc, eq } from "drizzle-orm";
+
+// Bodies arrive pre-rendered from the server (renderComment), because comments
+// are untrusted markdown and the sanitising renderer is server-only.
+export type RenderedComment = {
+  id: number;
+  /** Raw markdown — only used to populate the edit box. */
+  body: string;
+  bodyHtml: string;
+  createdAt: string;
+  editedAt: string | null;
+  deleted: boolean;
+  author: {
+    id: number;
+    name: string;
+    avatarUrl: string | null;
+    isInstructor: boolean;
+    isPlatformAdmin: boolean;
+  };
+  replies: RenderedComment[];
+};
 
 export type CommentAuthor = {
   id: number;
